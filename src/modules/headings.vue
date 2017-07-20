@@ -16,7 +16,7 @@ export default {
     methods: {
         insertHeading(e){
             this.$parent.closeDashboard();
-            bus.emit("exec", "formatBlock", e.target.textContent);
+            this.$emit("exec", "formatBlock", e.target.textContent);
         }
     }
 };

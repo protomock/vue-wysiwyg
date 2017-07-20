@@ -30,7 +30,7 @@ export default {
     },
     methods: {
         insertLink(){
-            bus.emit("exec", "insertHTML", `<a href='${this.url}'>${this.title}</a>`);
+            this.$emit("exec", "insertHTML", `<a href='${this.url}'>${this.title}</a>`);
             this.url = "";
             this.title = "";
         }
