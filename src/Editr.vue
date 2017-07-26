@@ -58,22 +58,29 @@ export default {
             type: String,
             default: "Enter text..."
         },
+        hideModules: {
+            type: Object
+        }
     },
 
 
-    components: { Btn  },
+    components: { Btn },
 
-    data () {
+    data() {
         return {
             selection: ""
         }
     },
 
     computed: {
-        modules: function() {
-            if (bus.options.hideModules)
-                return modules.filter(m => !bus.options.hideModules[m.name]);
-            return modules;
+        modules: function () {
+            let hideModules = this.hideModules || bus.options.hideModules,
+                filtered = modules;
+            
+            if (hideModules)
+                filtered = modules.filter(m => !hideModules[m.name]);
+
+            return filtered;
         },
 
         btnsWithDashboards: function () {
@@ -83,11 +90,11 @@ export default {
         },
 
         innerHTML: {
-            get () {
+            get() {
                 return this.$refs.content.innerHTML;
             },
 
-            set (html) {
+            set(html) {
                 if (this.innerHTML !== html) {
                     this.$refs.content.innerHTML = html;
                 }
@@ -120,16 +127,16 @@ export default {
             }
         },
 
-        exec: function(cmd, arg){
+        exec: function (cmd, arg) {
             this.$refs.content.focus();
-            document.execCommand(cmd, false, arg||"");
+            document.execCommand(cmd, false, arg || "");
 
             this.$nextTick(() => {
                 this.$emit("html", this.$refs.content.innerHTML);
             });
         },
 
-        onDocumentClick (e) {
+        onDocumentClick(e) {
             for (let i = 0; i < this.btnsWithDashboards.length; i++) {
                 const btn = this.$refs[`btn-${this.btnsWithDashboards[i].name}`][0];
                 if (btn && btn.showDashboard && !btn.$el.contains(e.target))
@@ -137,11 +144,11 @@ export default {
             }
         },
 
-        onInput: debounce(function (e){
+        onInput: debounce(function (e) {
             this.$emit("html", this.$refs.content.innerHTML);
         }, 300),
 
-        syncHTML () {
+        syncHTML() {
             if (this.html !== this.$refs.content.innerHTML)
                 this.innerHTML = this.html;
 
@@ -150,8 +157,8 @@ export default {
         }
     },
 
-    mounted () {
-        this.unWatch = this.$watch("html", this.syncHTML, { immediate: true});
+    mounted() {
+        this.unWatch = this.$watch("html", this.syncHTML, { immediate: true });
 
         this.$refs.content.addEventListener("input", this.onInput);
         document.addEventListener("click", this.onDocumentClick);
