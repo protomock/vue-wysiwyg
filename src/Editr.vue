@@ -10,7 +10,7 @@
             :title="module.title || ''"
         )
 
-    .editr--content(ref="content", contenteditable="true", tabindex="1", :placeholder="placeholder")
+    .editr--content(ref="content", contenteditable="true", tabindex="0", :placeholder="placeholder")
 
 </template>
 
