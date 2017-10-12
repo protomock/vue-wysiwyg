@@ -160,7 +160,8 @@ export default {
     mounted() {
         this.unWatch = this.$watch("html", this.syncHTML, { immediate: true });
 
-        this.$refs.content.addEventListener("input", this.onInput);
+        this.$refs.content.addEventListener("keyup", this.onInput);
+        this.$refs.content.addEventListener("paste", this.onInput);
         document.addEventListener("click", this.onDocumentClick);
 
         bus.on("exec", this.exec);
